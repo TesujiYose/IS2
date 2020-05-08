@@ -1,6 +1,5 @@
 package encryptdecrypt;
 
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -128,7 +127,6 @@ class MorseMethod implements OperationsMethod {
 
 }
 
-
 class VigenereMethod implements OperationsMethod {
     final String smallAlphabet = "abcdefghijklmnopqrstuvwxyz";
 
@@ -137,7 +135,6 @@ class VigenereMethod implements OperationsMethod {
         StringBuffer encryptedMsg = new StringBuffer();
         key = key.toLowerCase();
 
-
         // System.out.println("Crypting via VigenereMethod");
         for (int i = 0; i < msg.length(); i++) {
             int index = smallAlphabet.indexOf(msg.charAt(i));
@@ -145,7 +142,6 @@ class VigenereMethod implements OperationsMethod {
             index %= smallAlphabet.length();
             encryptedMsg.append(smallAlphabet.charAt(index));
         }
-
 
         return String.valueOf(encryptedMsg);
     }
@@ -264,7 +260,6 @@ class EncryptDecrypt extends Encrypter {
 
         EncryptSender sender = new EncryptSender();
 
-
         switch (alg) {
             case "morse":
                 sender.setMethod(new MorseMethod());
@@ -293,16 +288,45 @@ class EncryptDecrypt extends Encrypter {
 public class Main {
 
     public static void main(String[] args) {
-        String test[] = {"-data","LXFOPVEFRNHR",
+
+        String encMorse[] = {
+                "-data","helloworld",
+                "-mode","enc",
+                "-alg","morse"
+        };
+
+        String decMorse[] = {
+                "-data","**** * *-** *-** --- *-- --- *-* *-** -**",
+                "-mode","dec",
+                "-alg","morse"
+        };
+
+        String encVigenere[] = {
+                "-data","attackatdawn",
+                "-key","LEMON",
+                "-mode","enc",
+                "-alg","vigenere"
+        };
+
+        String decVigenere[] = {
+                "-data","LXFOPVEFRNHR",
                 "-key","LEMON",
                 "-mode","dec",
                 "-alg","vigenere"
         };
-        Encrypter method = new EncryptDecrypt(test);
-        method.process();
+        System.out.println("Encrypt helloworld with morze");
+        Encrypter test1 = new EncryptDecrypt(encMorse);
+        test1.process();
+        System.out.println("Decrypt encrypted helloworld (morse code) with morze");
+        Encrypter test2 = new EncryptDecrypt(decMorse);
+        test2.process();
+        System.out.println("Encrypt attackatdawn with key LEMON");
+        Encrypter test3 = new EncryptDecrypt(encVigenere);
+        test3.process();
+        System.out.println("Decrypt LXFOPVEFRNHR with key LEMON");
+        Encrypter test4 = new EncryptDecrypt(decVigenere);
+        test4.process();
     }
-    //ATTACKATDAWN
-    final String smallAlphabet = "abcdefghijklmnopqrstuvwxyz";
 
 }
 
